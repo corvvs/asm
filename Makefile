@@ -1,9 +1,12 @@
-CC			:= gcc
-CFLAGS		:= -Wall -Wextra -Werror
-ASM			:= nasm
-ASFLAGS	:= -f macho64
-NM			:= nm
-NMFLAGS		:= -g
+SRCDIR		:=	srcs
+OBJDIR		:=	objs
+INCDIR		:=	includes
+CC			:=	gcc
+CFLAGS		:=	-Wall -Wextra -Werror -I$(INCDIR)
+ASM			:=	nasm
+ASFLAGS		:=	-f macho64
+NM			:=	nm
+NMFLAGS		:=	-g
 NAMES		:=	strlen\
 				# strcpy\
 				# strcmp\
@@ -18,7 +21,6 @@ NAMES		:=	strlen\
 
 TEST_NAMES	:=	$(addprefix test_,$(NAMES))
 
-OBJDIR		:= objs
 MakeDep		= $(OBJDIR)/test_$(1).o $(OBJDIR)/ft_$(1).o
 
 .PHONY: all
@@ -27,11 +29,11 @@ all:	$(NAMES)
 .PHONY: tall
 tall:	$(TEST_NAMES)
 
-$(OBJDIR)/%.o: %.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/%.o: %.asm
+$(OBJDIR)/%.o: $(SRCDIR)/%.asm
 	mkdir -p $(OBJDIR)
 	$(ASM) $(ASFLAGS) $< -o $@
 
