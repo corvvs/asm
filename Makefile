@@ -20,8 +20,11 @@ NAMES		:=	strlen\
 				# list_remove_if
 
 TEST_NAMES	:=	$(addprefix test_,$(NAMES))
+NM_NAMES	:=	$(addprefix nm_,$(NAMES))
 
 MakeDep		= $(OBJDIR)/test_$(1).o $(OBJDIR)/ft_$(1).o
+MakeTestDep	= test_$(1)
+MakeNameDep	= nm_$(1)
 
 .PHONY: all
 all:	$(NAMES)
@@ -45,23 +48,21 @@ strcpy:			$(call MakeDep,strcpy)
 	@echo [Building $@]
 	$(CC) $(CFLAGS) $^ -o $@
 
-.PHONY: 		test_strlen
-test_strlen:	strlen
+.PHONY: 		$(TEST_NAMES)
+$(call MakeTestDep,strlen):	strlen
 	@echo
 	@echo [Testing $^]
 	./$^
 
-.PHONY:		nm_strlen
-nm_strlen:	ft_strlen.o
-	$(NM) $(NMFLAGS) $^
+.PHONY:			$(NM_NAMES)
+$(call MakeNameDep,strlen):	strlen
+	$(NM) $(NMFLAGS) $(OBJDIR)/ft_$^.o
 
-.PHONY:		clean
+.PHONY:		clean fclean re
 clean:
 	rm -rf $(OBJDIR)
 
-.PHONY:		fclean
 fclean:		clean
 	rm -rf $(NAMES)
 
-.PHONY: 	re
 re:			fclean all
