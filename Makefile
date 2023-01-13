@@ -13,7 +13,7 @@ NAME		:=	libasm.a
 
 ### リストの定義
 NAMES		:=	strlen\
-				# strcpy\
+				strcpy\
 				# strcmp\
 				# write\
 				# read\
@@ -26,6 +26,24 @@ NAMES		:=	strlen\
 TEST_NAMES	:=	$(addprefix test_,$(NAMES))
 NM_NAMES	:=	$(addprefix nm_,$(NAMES))
 ASM_OBJS	:=	$(addsuffix .o,$(addprefix $(OBJDIR)/ft_,$(NAMES)))
+
+define TARGET_EXEC
+$(1):	$(call MakeDep,$(1))
+	@echo [Building $(1)]
+	$(CC) $(CFLAGS) $(call MakeDep,$(1)) -o $(1)
+endef
+
+define TARGET_TEST
+$(call MakeTestDep,$(1)):	$(1)
+	@echo
+	@echo [Testing $(1)]
+	./$(1)
+endef
+
+define TARGET_NM
+$(call MakeNameDep,$(1)):	$(1)
+	$(NM) $(NMFLAGS) $(OBJDIR)/ft_$(1).o
+endef
 
 ### 関数定義
 MakeDep		= $(OBJDIR)/test_$(1).o $(NAME)
@@ -52,25 +70,21 @@ $(NAME):		$(ASM_OBJS)
 	$(AR) $(ARFLAGS) $@ $^
 
 ### 各関数の実行ファイルビルドルール
-strlen:			$(call MakeDep,strlen)
-	@echo [Building $@]
-	$(CC) $(CFLAGS) $^ -o $@
-
-strcpy:			$(call MakeDep,strcpy)
-	@echo [Building $@]
-	$(CC) $(CFLAGS) $^ -o $@
+$(foreach func,\
+	$(NAMES),\
+	$(eval $(call TARGET_EXEC,$(func))))
 
 ### 各関数のテストルール
 .PHONY: 		$(TEST_NAMES)
-$(call MakeTestDep,strlen):	strlen
-	@echo
-	@echo [Testing $^]
-	./$^
+$(foreach func,\
+	$(NAMES),\
+	$(eval $(call TARGET_TEST,$(func))))
 
 ### 各関数のnmルール
 .PHONY:			$(NM_NAMES)
-$(call MakeNameDep,strlen):	strlen
-	$(NM) $(NMFLAGS) $(OBJDIR)/ft_$^.o
+$(foreach func,\
+	$(NAMES),\
+	$(eval $(call TARGET_NM,$(func))))
 
 ### その他
 .PHONY:		clean fclean re

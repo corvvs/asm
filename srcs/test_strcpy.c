@@ -21,5 +21,6 @@ int main()
 	kos += test("");
 	kos += test("\0apple");
 	kos += test("apple");
+	kos += test("        lea     rax, [rdi]                      ; rdi に入っているアドレスが指す値, ではなくアドレス自体をraxに入れる");
 	return !(kos == 0);
 }
