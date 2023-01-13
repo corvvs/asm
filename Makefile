@@ -1,31 +1,65 @@
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra -Werror
 ASM			:= nasm
-ASMFLAGS	:= -f macho64
+ASFLAGS	:= -f macho64
 NM			:= nm
 NMFLAGS		:= -g
+NAMES		:=	strlen\
+				# strcpy\
+				# strcmp\
+				# write\
+				# read\
+				# strdup\
+				# atoi_base\
+				# list_push_front\
+				# list_size\
+				# list_sort\
+				# list_remove_if
 
-%.o: %.asm
-	$(ASM) $(ASMFLAGS) $< -o $@
+TEST_NAMES	:=	$(addprefix test_,$(NAMES))
 
-ft_strlen:	test_strlen.o ft_strlen.o
+OBJDIR		:= objs
+MakeDep		= $(OBJDIR)/test_$(1).o $(OBJDIR)/ft_$(1).o
+
+.PHONY: all
+all:	$(NAMES)
+
+.PHONY: tall
+tall:	$(TEST_NAMES)
+
+$(OBJDIR)/%.o: %.c
+	mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/%.o: %.asm
+	mkdir -p $(OBJDIR)
+	$(ASM) $(ASFLAGS) $< -o $@
+
+strlen:			$(call MakeDep,strlen)
 	@echo [Building $@]
 	$(CC) $(CFLAGS) $^ -o $@
 
-.PHONY: test_strlen
-test_strlen: ft_strlen
+strcpy:			$(call MakeDep,strcpy)
+	@echo [Building $@]
+	$(CC) $(CFLAGS) $^ -o $@
+
+.PHONY: 		test_strlen
+test_strlen:	strlen
 	@echo
 	@echo [Testing $^]
 	./$^
 
-.PHONY: nm_strlen
-nm_strlen: ft_strlen.o
+.PHONY:		nm_strlen
+nm_strlen:	ft_strlen.o
 	$(NM) $(NMFLAGS) $^
 
-.PHONY:	clean
+.PHONY:		clean
 clean:
-	rm -rf *.o
+	rm -rf $(OBJDIR)
 
-.PHONY:	fclean
-fclean:	clean
-	rm -rf ft_strlen
+.PHONY:		fclean
+fclean:		clean
+	rm -rf $(NAMES)
+
+.PHONY: 	re
+re:			fclean all
