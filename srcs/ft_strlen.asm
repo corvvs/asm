@@ -47,6 +47,7 @@ LOOP_START:                             ; このシンボルは外向きでは�
                                         ; 比較結果はeflagsレジスタのZFビットに書き込まれる.
                                         ; -> 一致するなら0, しないなら1
                                         ; cf. https://www.felixcloutier.com/x86/cmp
+                                        ; rdi は第1引数が入っているアドレス.
 
         lea     rax, [rax+1]            ; アドレス rax + 1 **そのもの**をraxレジスタにコピーする.
                                         ; 「アドレス rax + 1 にあるデータを」ではないことに注意.
