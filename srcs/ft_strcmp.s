@@ -4,8 +4,8 @@ global _ft_strcmp
 SECTION .text align=16
 
 _ft_strcmp:
-        push    rbp
-        mov     rbp, rsp
+        ; push    rbp                   ; スタック使わないのでコメントアウト
+        ; mov     rbp, rsp
 
         xor     rdx, rdx                ; rdx(i) を0初期化
 
@@ -36,5 +36,6 @@ LOOP_START:
 LOOP_END:
         sub     eax, ecx                ; 返り値は s1[i] - s2[i].
                                         ; どちらもゼロ拡張になってるので普通に引いてok.
-        pop     rbp
+
+        ; pop     rbp                   ; スタック使わないのでコメントアウト
         ret
