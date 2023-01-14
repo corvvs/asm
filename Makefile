@@ -62,7 +62,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.asm
+$(OBJDIR)/%.o: $(SRCDIR)/%.s
 	mkdir -p $(OBJDIR)
 	$(ASM) $(ASFLAGS) $< -o $@
 
