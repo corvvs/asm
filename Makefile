@@ -2,7 +2,7 @@ SRCDIR		:=	srcs
 OBJDIR		:=	objs
 INCDIR		:=	includes
 CC			:=	gcc
-CFLAGS		:=	-Wall -Wextra -Werror -I$(INCDIR) -g -fsanitize=address
+CFLAGS		:=	-Wall -Wextra -Werror -fno-builtin -I$(INCDIR) -g -fsanitize=address
 ASM			:=	nasm
 ASFLAGS		:=	-f macho64
 AR			:=	ar
@@ -14,10 +14,10 @@ NAME		:=	libasm.a
 ### リストの定義
 NAMES		:=	strlen\
 				strcpy\
-				# strcmp\
+				strcmp\
+				strdup\
 				# write\
 				# read\
-				# strdup\
 				# atoi_base\
 				# list_push_front\
 				# list_size\
