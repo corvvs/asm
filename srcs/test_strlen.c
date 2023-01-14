@@ -1,4 +1,4 @@
-#include "asmfunc.h"
+#include "libasm.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
