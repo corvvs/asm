@@ -40,6 +40,7 @@ bool test_longstr(const char* label, const char* s1, const char *s2)
 	s1[n] = s2[n] = 0;\
 	detstr;\
 	kos += test_longstr(label, s1, s2);\
+	free(s1); free(s2);\
 }
 
 int main()
