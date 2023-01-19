@@ -16,8 +16,8 @@ NAMES		:=	strlen\
 				strcpy\
 				strcmp\
 				strdup\
-				# write\
-				# read\
+				read\
+				write\
 				# atoi_base\
 				# list_push_front\
 				# list_size\
