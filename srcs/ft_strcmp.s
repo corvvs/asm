@@ -9,9 +9,7 @@ _ft_strcmp:
 
         xor     rdx, rdx                ; rdx(i) を0初期化
 
-align   8
-
-LOOP_START:
+.comparison:
         movzx   eax, byte [rdi + rdx]   ; s1[i] を rax に代入するのだが...
                                         ; - ソースに byte がついているので, コピーされるのは下位1バイト.
                                         ; - 代入先が eax なので, rax の下位4バイト.
@@ -24,7 +22,7 @@ LOOP_START:
                                         ; al, cl は rax, rcx の下位11バイト.
                                         ; 前もってゼロ拡張でコピーしているので, man の通り
                                         ; "The comparison is done using unsigned characters"となっている.
-        jnz     LOOP_END                ; al != cl ならループ脱出
+        jnz     .epilogue               ; al != cl ならループ脱出
 
         test    al, al                  ; test op1 op2 は op1 & op2 を計算する.
                                         ; 計算結果自体は破棄されるが, 計算結果に応じてフラグレジスタを更新する:
@@ -32,8 +30,9 @@ LOOP_START:
                                         ;   - MSBそのものと思えばよい
                                         ; - ZF: 結果が0なら立つ
                                         ; - PF: 結果のパリティ
-        jnz     LOOP_START              ; al & al がtrueなら, つまり al がヌル文字でないならループ継続
-LOOP_END:
+        jnz     .comparison             ; al & al がtrueなら, つまり al がヌル文字でないならループ継続
+
+.epilogue:
         sub     eax, ecx                ; 返り値は s1[i] - s2[i].
                                         ; どちらもゼロ拡張になってるので普通に引いてok.
 
