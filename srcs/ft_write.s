@@ -12,15 +12,11 @@ _ft_write:
         push    rbx
         sub     rsp, 8
 
-        ; [ordinary function]
-        ; rdi, rsi, rdx, rcx, r8, r9
-        ; [syscall]
-        ; rdi, rsi, rdx, rcx, r8, r9
+        ; invoke write(4) via syscall
         mov     rax, 4
         or      rax, 0x2000000
         syscall
 
-        ;       rax
         jnc     .epilogue
 
         mov     rbx, rax
@@ -29,7 +25,6 @@ _ft_write:
         mov     rax, -1
 
 .epilogue:
-        ; epilogue
         add     rsp, 8
         pop     rbx
         pop     rbp

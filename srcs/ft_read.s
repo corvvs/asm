@@ -12,15 +12,11 @@ _ft_read:
         push    rbx
         sub     rsp, 8
 
-        ; [ordinary function]
-        ; rdi, rsi, rdx, rcx, r8, r9
-        ; [syscall]
-        ; rdi, rsi, rdx, rcx, r8, r9
+        ; invoke read(3) via syscall
         mov     rax, 3
         or      rax, 0x2000000
         syscall
 
-        ;       rax
         jnc     .epilogue
 
         mov     rbx, rax
@@ -29,7 +25,6 @@ _ft_read:
         mov     rax, -1
 
 .epilogue:
-        ; epilogue
         add     rsp, 8
         pop     rbx
         pop     rbp

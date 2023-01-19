@@ -30,15 +30,14 @@ _ft_strdup:
                                                 ; これ以降 n は使わないので rax は退避しない
 
         test    rax, rax                        ; rax のNULLチェック
-        jz      COPY_END
-COPY_START:                                     ; if (!d) {
+        jz      .epilogue
 
+.copy:                                          ; if (!d) {
         mov     rdi, rax                        ; rax は d
         mov     rsi, rbx                        ; rbx は rdi
         call    _ft_strcpy                      ; ft_strcpy(d, str)
-
-COPY_END:                                       ; }
-
+                                                ; }
+.epilogue:
         add     rsp, 8                          ; for stack 16byte alignment
         pop     rbx                             ; スタックに退避しておいた rbx を戻す
         pop     rbp

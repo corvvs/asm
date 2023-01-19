@@ -41,7 +41,7 @@ align   8                               ; アライメントを8バイトにす�
                                         ; cf. https://www.nasm.us/doc/nasmdoc5.html#section-5.10.1
                                         ; この辺はコンパイラに逆アセさせたやつをみるとよくわかる
 
-LOOP_START:                             ; このシンボルは外向きではない
+.loop_start:                            ; このシンボルは外向きではない
 
         cmp     byte [rdi+rax+1], 0     ; アドレス rdi + rax + 1 にあるデータと 0 を, 1バイトだと思って比較する.
                                         ; 比較結果はeflagsレジスタのZFビットに書き込まれる.
@@ -54,9 +54,11 @@ LOOP_START:                             ; このシンボルは外向きでは�
                                         ; 要は rax += 1 である.
                                         ; "Load Effective Address"
 
-        jnz     LOOP_START              ; eflagsレジスタのZFが**ゼロではない**場合, 与えられたラベルにジャンプする.
+        jnz     .loop_start             ; eflagsレジスタのZFが**ゼロではない**場合, 与えられたラベルにジャンプする.
                                         ; "Jump if Non-Zero"
 
+.epilogue:
+                                        ; 返り値は rax そのまま
         pop     rbp                     ; スタックトップから1つポップしてrbpレジスタにコピー
         ret                             ; 呼び出し元に戻る
                                         ; cf. https://tanakamura.github.io/pllp/docs/asm_language.html
