@@ -20,7 +20,7 @@ _ft_strdup:
         ; rbx, rsp, rbp, r12-r15
 
         push    rbx                             ; rbx を使うので退避しておく
-        xor     rcx, rcx                        ; rcx(i) = 0
+        sub     rsp, 8                          ; for stack 16byte alignment
 
         mov     rbx, rdi                        ; rbx = str (退避)
         call    _ft_strlen                      ; n = strlen(str)
@@ -39,6 +39,7 @@ COPY_START:                                     ; if (!d) {
 
 COPY_END:                                       ; }
 
+        add     rsp, 8                          ; for stack 16byte alignment
         pop     rbx                             ; スタックに退避しておいた rbx を戻す
         pop     rbp
         ret
