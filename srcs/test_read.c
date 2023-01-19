@@ -34,17 +34,25 @@ bool test(
 int main() {
 	char buffer[1000];
 	unsigned int kos = 0;
-	kos += test("read 0 from STDIN into NULL", NULL, 0, NULL, 0, 0, 0);
-	kos += test("attempt to read 10 from " __FILE__ " into NULL", __FILE__, -1, NULL, 10, -1, EFAULT);
-	kos += test("read 10 from " __FILE__, __FILE__, -1, buffer, 10, 10, 0);
-	kos += test("read 10 from /dev/null", "/dev/null", -1, buffer, 10, 0, 0);
+	kos += test("read 0 from STDIN into NULL",
+		NULL, STDIN_FILENO, NULL, 0, 0, 0);
+	kos += test("attempt to read 10 from " __FILE__ " into NULL",
+		__FILE__, -1, NULL, 10, -1, EFAULT);
+	kos += test("read 10 from " __FILE__,
+		__FILE__, -1, buffer, 10, 10, 0);
+	kos += test("read 10 from /dev/null",
+		"/dev/null", -1, buffer, 10, 0, 0);
 	{
 		int devnull = open("/dev/null", O_WRONLY);
-		test("attempt to read from /dev/null opened as WRONLY", NULL, devnull, buffer, 10, -1, EBADF);
+		test("attempt to read from /dev/null opened as WRONLY",
+			NULL, devnull, buffer, 10, -1, EBADF);
 		kos += close(devnull);
 	}
-	kos += test("read 1000 from /dev/zero", "/dev/zero", -1, buffer, 1000, 1000, 0);
-	kos += test("attempt to read current dir", ".", -1, buffer, 10, -1, EISDIR);
-	kos += test("attempt to read fd -1", NULL, -1, NULL, 0, -1, EBADF);
+	kos += test("read 1000 from /dev/zero",
+		"/dev/zero", -1, buffer, 1000, 1000, 0);
+	kos += test("attempt to read current dir",
+		".", -1, buffer, 10, -1, EISDIR);
+	kos += test("attempt to read from fd -1",
+		NULL, -1, NULL, 0, -1, EBADF);
 	return !(kos == 0);
 }
