@@ -7,3 +7,6 @@ int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strdup(const char *str);
 ssize_t	ft_read(int fd, void* data, size_t n);
 ssize_t	ft_write(int fd, void* data, size_t n);
+
+int		ft_is_sign(int c);
+int		ft_is_space(int c);
