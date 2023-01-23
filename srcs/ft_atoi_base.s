@@ -4,10 +4,7 @@ global  _ft_memset
 global  _ft_is_sign
 global  _ft_is_space
 global  _make_map
-global  _loop
-global  _ret_invalid
-global  _epilogue
-; global  _ft_atoi_base
+global  _ft_atoi_base
 
 SECTION .text align=16
 
@@ -109,28 +106,28 @@ _make_map:
 
         xor     eax, eax
 
-_loop:
+.loop:
         movzx   ebx, byte [r12 + r14]   ; ebx = (unsigned char) base[i]
                                         ; ebx のゴミビットを掃除
         test    ebx, ebx
-        jz      _epilogue
+        jz      .epilogue
 
         ; is_sign なら invalid
         mov     edi, ebx
         call    _ft_is_sign
         test    eax, eax
-        jnz     _ret_invalid
+        jnz     .ret_invalid
 
         ; is_space なら invalid
         mov     edi, ebx
         call    _ft_is_space
         test    eax, eax
-        jnz     _ret_invalid
+        jnz     .ret_invalid
 
         ; char_map[base[i]] が FFH でないなら invalid
         mov     rax, [r13 + rbx]
         cmp     byte [r13 + rbx], byte 255
-        jnz     _ret_invalid
+        jnz     .ret_invalid
 
         mov     byte [r13 + rbx], r14b          ; char_map[base[i]] = r14
         lea     rax, [r13 + rbx]
@@ -138,12 +135,12 @@ _loop:
         mov     rax, [r13 + rbx + 1]
         add     r14, 1                          ; i += 1
         mov     rax, r14
-        jmp     _loop
+        jmp     .loop
 
-_ret_invalid:
+.ret_invalid:
         mov     r14, 0
 
-_epilogue:
+.epilogue:
         ; epilogue
         mov     rax, r14
         xor     r14, r14
