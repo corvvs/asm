@@ -1,3 +1,6 @@
+#ifndef LIBASM_H
+# define LIBASM_H
+
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -15,3 +18,4 @@ int		ft_is_space(int c);
 
 #include <limits.h>
 int		make_map(const char *base, unsigned char char_map[UCHAR_MAX + 1]);
+#endif

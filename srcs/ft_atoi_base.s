@@ -177,9 +177,11 @@ _ft_atoi_base:
 .call_make_map:
         mov     rdi, rsi
         lea     rsi, [rsp + 8]
+        xor     rbx, rbx
         call    _make_map
+        test    eax, eax
+        jz      .epilogue
         mov     r13d, eax
-
 
 .loop_skip_space:
         movzx   edi, byte [r12 + r14]
