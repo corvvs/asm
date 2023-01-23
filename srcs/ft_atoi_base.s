@@ -1,5 +1,6 @@
 default rel
 
+global  _ft_memset
 global  _ft_is_sign
 global  _ft_is_space
 global  _make_map
@@ -7,7 +8,6 @@ global  _loop
 global  _ret_invalid
 global  _epilogue
 ; global  _ft_atoi_base
-extern  _memset
 
 SECTION .text align=16
 
@@ -17,6 +17,26 @@ SECTION .text align=16
 ; rbx, rsp, rbp, r12-15
 ; [caller-save]
 ; others
+
+_ft_memset:
+        ; void *memset(void *dst, int ch, size_t n)
+        push    rbp
+        mov     rbp, rsp
+        ; prologue
+        mov     rax, rdi
+
+.loop:
+        test    rdx, rdx
+        jz      .epilogue
+        mov     byte [rdi], sil
+        lea     rdi, [rdi + 1]
+        sub     rdx, 1
+        jmp     .loop
+
+.epilogue:
+        ; epilogue
+        pop     rbp
+        ret
 
 _ft_is_sign:
         ; int is_sign(int c)
@@ -85,7 +105,7 @@ _make_map:
         mov     rdi, r13
         mov     rsi, 255
         mov     rdx, 256
-        call    _memset
+        call    _ft_memset
 
         xor     eax, eax
 
