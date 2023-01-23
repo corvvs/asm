@@ -10,3 +10,6 @@ ssize_t	ft_write(int fd, void* data, size_t n);
 
 int		ft_is_sign(int c);
 int		ft_is_space(int c);
+
+#include <limits.h>
+int		make_map(const char *base, unsigned char char_map[UCHAR_MAX + 1]);
