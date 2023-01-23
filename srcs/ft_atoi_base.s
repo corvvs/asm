@@ -155,17 +155,86 @@ _make_map:
         ret
 
 
-; _ft_atoi_base:
-;         ; int ft_atoi_base(const char *str, const char *base)
-;         push    rbp
-;         mov     rbp, rsp
-;         ; prologue
+_ft_atoi_base:
+        ; int ft_atoi_base(const char *str, const char *base)
+        push    rbp
+        mov     rbp, rsp
+        push    r12
+        push    r13
+        push    r14
+        push    r15
+        push    rbx
+
+        sub     rsp, 256        ; char_map
+
+        sub     rsp, 8
+        ; prologue
+        mov     r12, rdi        ; r12 = str
+        mov     r13, rsi        ; r13 = base
+        mov     r14, 0          ; i = 0
+        mov     r15d, -1        ; sign = -1
+
+.call_make_map:
+        mov     rdi, rsi
+        lea     rsi, [rsp + 8]
+        call    _make_map
+        mov     r13d, eax
 
 
+.loop_skip_space:
+        movzx   edi, byte [r12 + r14]
+        test    edi, edi
+        jz      .end_skip_space
+        call    _ft_is_space
+        test    eax, eax
+        jz      .end_skip_space
+        lea     r14, [r14 + 1]
+        jmp     .loop_skip_space
 
+.end_skip_space:
 
+.loop_skip_sign:
+        movzx   edi, byte [r12 + r14]
+        mov     ebx, edi
+        test    edi, edi
+        jz      .end_skip_sign
+        call    _ft_is_sign
+        test    eax, eax
+        jz      .end_skip_sign
+        mov     eax, r15d
+        neg     eax
+        cmp     ebx, '-'
+        cmove   r15d, eax
 
+        lea     r14, [r14 + 1]
+        jmp     .loop_skip_sign
 
-;         ; epilogue
-;         pop     rbp
-;         ret
+.end_skip_sign:
+        mov     ebx, 0
+
+.loop_atoi:
+        movzx   rdi, byte [r12 + r14]           ; rdi = str[i]
+        test    rdi, rdi
+        jz      .end_atoi
+        movzx   edi, byte [rsp + rdi + 8]       ; edi = char_map[str[i]]
+        cmp     dil, 255                        ; edi == -1
+        jz      .end_atoi
+        imul    ebx, r13d
+        add     ebx, edi
+        lea     r14, [r14 + 1]
+        jmp     .loop_atoi
+
+.end_atoi:
+
+.epilogue:
+        mov     eax, ebx
+        ; epilogue
+        add     rsp, 8
+        add     rsp, 256
+        pop     rbx
+        pop     r15
+        pop     r14
+        pop     r13
+        pop     r12
+        pop     rbp
+        ret
