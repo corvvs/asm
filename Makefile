@@ -18,7 +18,7 @@ NAMES		:=	strlen\
 				strdup\
 				read\
 				write\
-				# atoi_base\
+				atoi_base\
 				# list_push_front\
 				# list_size\
 				# list_sort\
@@ -59,11 +59,11 @@ tall:	$(TEST_NAMES)
 
 ### コンパイル用パターンルール
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	mkdir -p $(OBJDIR)
+	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.s
-	mkdir -p $(OBJDIR)
+	@mkdir -p $(OBJDIR)
 	$(ASM) $(ASFLAGS) $< -o $@
 
 $(NAME):		$(ASM_OBJS)
