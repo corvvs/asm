@@ -35,25 +35,34 @@ _ft_memset:
         pop     rbp
         ret
 
+; レジスタ %1 内の文字が64未満の文字の集合 %2 に含まれるかどうかを al にセットする
+%macro  in_charset      2
+        xor     rax, rax
+        mov     rsi, qword %2
+        bt      rsi, %1
+        setb    al
+%endmacro
+
+; レジスタ %1 の値が %2 より小さいかどうかを cl にセットする
+; rax を破壊する
+%macro  is_lt           2
+        xor     rcx, rcx        ; ゴミビットを消すため
+        mov     eax, %1
+        cmp     eax, %2
+        setb    cl
+%endmacro
+
 _ft_is_sign:
         ; int is_sign(int c)
         push    rbp
         mov     rbp, rsp
         ; prologue
 
-        ; al = c < 64
-        xor     rcx, rcx                ; ゴミビットを消すため
-        mov     eax, edi
-        cmp     eax, 64
-        setb    cl
-
-        ; cl = c == '+' || c == '-'
-        xor     rax, rax
-        mov     rsi, qword 1010000000000000000000000000000000000000000000B
-        bt      rsi, rdi
-        setb    al
-
-        and     eax, ecx                ; cl = al && cl
+        is_lt           edi, 64         ; al = c < 64
+        in_charset      rdi, qword 1010000000000000000000000000000000000000000000B
+                                        ; 43, 45 が立っている
+                                        ; cl = c == '+' || c == '-'
+        and             eax, ecx        ; cl = al && cl
         ; epilogue
         pop     rbp
         ret
@@ -64,19 +73,11 @@ _ft_is_space:
         mov     rbp, rsp
         ; prologue
 
-        ; al = c < 64
-        xor     rcx, rcx                ; ゴミビットを消すため
-        mov     eax, edi
-        cmp     eax, 64
-        setb    cl
-
-        ; cl = is space
-        xor     rax, rax
-        mov     rsi, qword 100000000000000000011111000000000B
-        bt      rsi, rdi
-        setb    al
-
-        and     eax, ecx                ; cl = al && cl
+        is_lt           edi, 64         ; al = c < 64
+        in_charset      rdi, qword 100000000000000000011111000000000B
+                                        ; 9, 10, 11, 12, 13, 32 が立っている
+                                        ; cl = is space
+        and             eax, ecx        ; cl = al && cl
         ; epilogue
         pop     rbp
         ret
@@ -164,11 +165,10 @@ _ft_atoi_base:
         push    r14
         push    r15
         push    rbx
-
         sub     rsp, 256        ; char_map
-
         sub     rsp, 8
         ; prologue
+
         mov     r12, rdi        ; r12 = str
         mov     r13, rsi        ; r13 = base
         mov     r14, 0          ; i = 0
@@ -185,38 +185,37 @@ _ft_atoi_base:
 
 .loop_skip_space:
         movzx   edi, byte [r12 + r14]
-        test    edi, edi
+        test    edi, edi                        ; NUL文字チェック
         jz      .end_skip_space
         call    _ft_is_space
         test    eax, eax
         jz      .end_skip_space
         lea     r14, [r14 + 1]
         jmp     .loop_skip_space
-
 .end_skip_space:
 
-.loop_skip_sign:
+.loop_skip_sign:                                ; ここでは, ebx は一時変数として使う
         movzx   edi, byte [r12 + r14]
-        mov     ebx, edi
         test    edi, edi
-        jz      .end_skip_sign
+        jz      .end_skip_sign                  ; NUL文字チェック
+        mov     ebx, edi                        ; call で破壊されたくないので ebx に入れておく
         call    _ft_is_sign
         test    eax, eax
         jz      .end_skip_sign
-        mov     eax, r15d
-        neg     eax
+
+        mov     eax, r15d                       ; もし符号が-だった場合はsignを反転する
+        neg     eax                             ; eax = -sign
         cmp     ebx, '-'
-        cmove   r15d, eax
+        cmove   r15d, eax                       ; ebx == '-' だったなら sign = -sign
 
         lea     r14, [r14 + 1]
         jmp     .loop_skip_sign
-
 .end_skip_sign:
-        mov     ebx, 0
 
+        mov     ebx, 0                          ; これ以降, ebx は val として使う
 .loop_atoi:
         movzx   rdi, byte [r12 + r14]           ; rdi = str[i]
-        test    rdi, rdi
+        test    rdi, rdi                        ; NUL文字チェック
         jz      .end_atoi
         movzx   edi, byte [rsp + rdi + 8]       ; edi = char_map[str[i]]
         cmp     dil, 255                        ; edi == -1
@@ -225,11 +224,11 @@ _ft_atoi_base:
         add     ebx, edi
         lea     r14, [r14 + 1]
         jmp     .loop_atoi
-
 .end_atoi:
 
 .epilogue:
         mov     eax, ebx
+
         ; epilogue
         add     rsp, 8
         add     rsp, 256
