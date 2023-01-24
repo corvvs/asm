@@ -20,7 +20,7 @@ NAMES		:=	strlen\
 				write\
 				atoi_base\
 				list_push_front\
-				# list_size\
+				list_size\
 				# list_sort\
 				# list_remove_if
 TEST_NAMES	:=	$(addprefix test_,$(NAMES))
