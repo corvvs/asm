@@ -1,7 +1,9 @@
+%include "srcs/ft_macro.s"
+
 default rel
 
 global  _ft_read
-extern  ___error
+use_errno
 SECTION .text align=16
 
 _ft_read:
@@ -13,15 +15,12 @@ _ft_read:
         sub     rsp, 8
 
         ; invoke read(3) via syscall
-        mov     rax, 3
-        or      rax, 0x2000000
-        syscall
+        ft_syscall      NR_READ
 
         jnc     .epilogue
 
         mov     rbx, rax
-        call    ___error
-        mov     dword [rax], ebx        ; set errno
+        set_errno       ebx
         mov     rax, -1
 
 .epilogue:
