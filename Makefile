@@ -2,9 +2,9 @@ SRCDIR		:=	srcs
 OBJDIR		:=	objs
 INCDIR		:=	includes
 CC			:=	gcc
-CFLAGS		:=	-Wall -Wextra -Werror -fno-builtin -I$(INCDIR) -g -fsanitize=address
+CFLAGS		:=	-Wall -Wextra -Werror -fno-builtin -I$(INCDIR) -g #-fsanitize=address
 ASM			:=	nasm
-ASFLAGS		:=	-f macho64
+ASFLAGS		:=	-f macho64 -g
 AR			:=	ar
 ARFLAGS		:=	rcs
 NM			:=	nm
@@ -19,7 +19,7 @@ NAMES		:=	strlen\
 				read\
 				write\
 				atoi_base\
-				# list_push_front\
+				list_push_front\
 				# list_size\
 				# list_sort\
 				# list_remove_if
