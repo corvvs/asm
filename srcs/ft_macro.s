@@ -1,5 +1,5 @@
-%ifndef FT_MACRO_ASM
-    %define FT_MACRO_ASM
+%ifndef FT_MACRO_S
+    %define FT_MACRO_S
 
 ; システムコール番号
 %define NR_READ     3
