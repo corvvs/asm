@@ -20,9 +20,10 @@ SECTION .text align=16                  ; これ以降のコードがどのセ�
 
 _ft_strlen:                             ; これが global パワーで外部に公開される
 
-        push    rbp                     ; rbpレジスタの値をスタックに積んだあと,
-        mov     rbp, rsp                ; rbpにレジスタにrspレジスタの値をコピーする.
-                                        ; これはルーチンワーク.
+        ; push    rbp                   ; rbpレジスタの値をスタックに積んだあと,
+        ; mov     rbp, rsp              ; rbpにレジスタにrspレジスタの値をコピーする.
+        ;                               ; これはルーチンワーク.
+                                        ; ...なのだがスタック使わないので不要
                                         ;
                                         ; rsp: スタックポインタ; スタックトップを指す
                                         ; rbp: (スタック)ベースポインタ; スタックベース(ボトム)を指す
@@ -59,7 +60,8 @@ align   8                               ; アライメントを8バイトにす�
 
 .epilogue:
                                         ; 返り値は rax そのまま
-        pop     rbp                     ; スタックトップから1つポップしてrbpレジスタにコピー
+        ; pop     rbp                   ; スタックトップから1つポップしてrbpレジスタにコピー
+                                        ; ...なのだがスタック使わないので不要
         ret                             ; 呼び出し元に戻る
                                         ; cf. https://tanakamura.github.io/pllp/docs/asm_language.html
                                         ; > 1. rsp が指すアドレスから8byte値をロードし、その値をプログラムカウンタに格納
