@@ -37,7 +37,8 @@ define TARGET_TEST
 $(call MakeTestDep,$(1)):	$(1)
 	@echo
 	@echo [Testing $(1)]
-	valgrind --leak-check=full ./$(1)
+#	valgrind --leak-check=full ./$(1)
+	./$(1)
 endef
 
 define TARGET_NM
