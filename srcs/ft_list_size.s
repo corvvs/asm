@@ -17,7 +17,7 @@ _ft_list_size:
         test    rdi, rdi
         jz      .epilogue
         lea     rax, [rax + 1]
-        mov     rdi, [rdi + ft_list_next]
+        mov     rdi, next_of(rdi)
         jmp     .loop
 
 .epilogue:

@@ -6,4 +6,7 @@ struc   ft_list
     ft_list_next:   resq    1
 endstruc
 
+%define data_of(x) [x + ft_list_data]
+%define next_of(x) [x + ft_list_next]
+
 %endif

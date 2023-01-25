@@ -22,7 +22,7 @@ NAMES		:=	strlen\
 				list_push_front\
 				list_size\
 				list_sort\
-				# list_remove_if
+				list_remove_if
 TEST_NAMES	:=	$(addprefix test_,$(NAMES))
 NM_NAMES	:=	$(addprefix nm_,$(NAMES))
 ASM_OBJS	:=	$(addsuffix .o,$(addprefix $(OBJDIR)/ft_,$(NAMES)))
