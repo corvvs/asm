@@ -5,4 +5,6 @@
 # define TX_OK "\e[32m"
 # define TX_RS "\e[0m"
 
+void free_nothing(void *data);
+
 #endif

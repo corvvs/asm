@@ -7,7 +7,6 @@
 #include <fcntl.h>
 #include <limits.h>
 
-
 int main() {
 	char	*str1 = strdup("hello");
 	ft_list_push_front(NULL, NULL);
@@ -28,4 +27,8 @@ int main() {
 	printf("next       = %p\n", next);
 	printf("next->data = %s\n", (char *)next->data);
 	printf("next->next = %p\n", next->next);
+
+	ft_list_clear(head, free_nothing);
+	free(str1);
+	free(str2);
 }

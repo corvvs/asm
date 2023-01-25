@@ -12,6 +12,7 @@ bool test(const char* str)
 	bool str_is_ko = strcmp(expected, str) != 0;
 	bool is_ko = addr_is_ko || str_is_ko;
 	printf("[%s] src = \"%s\"(%p); strdup(src) = %p %s src\n", is_ko ? "KO" : "ok", str, str, expected, (str_is_ko || addr_is_ko ? "!=" : "=="));
+	free(expected);
 	return is_ko;
 }
 

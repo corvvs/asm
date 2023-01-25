@@ -2,7 +2,7 @@ SRCDIR		:=	srcs
 OBJDIR		:=	objs
 INCDIR		:=	includes
 CC			:=	gcc
-CFLAGS		:=	-Wall -Wextra -Werror -fno-builtin -I$(INCDIR) -g -fsanitize=address
+CFLAGS		:=	-Wall -Wextra -Werror -fno-builtin -I$(INCDIR) -g # -fsanitize=address
 ASM			:=	nasm
 ASFLAGS		:=	-f macho64 -g
 AR			:=	ar
@@ -37,6 +37,7 @@ define TARGET_TEST
 $(call MakeTestDep,$(1)):	$(1)
 	@echo
 	@echo [Testing $(1)]
+#	valgrind --leak-check=full ./$(1)
 	./$(1)
 endef
 
@@ -46,7 +47,7 @@ $(call MakeNameDep,$(1)):	$(1)
 endef
 
 ### 関数定義
-MakeDep		= $(OBJDIR)/test_$(1).o $(NAME)
+MakeDep		= $(OBJDIR)/test_$(1).o $(OBJDIR)/test.o $(NAME)
 MakeTestDep	= test_$(1)
 MakeNameDep	= nm_$(1)
 

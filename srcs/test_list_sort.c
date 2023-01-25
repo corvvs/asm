@@ -34,5 +34,6 @@ int main() {
 		ft_list_sort(&head, intcmp);
 		printf("re-sorted: ");
 		FT_LIST_PRINT(head, int);
+		ft_list_clear(head, free_nothing);
 	}
 }

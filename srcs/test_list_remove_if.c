@@ -42,10 +42,6 @@ int	lt(void *a, void *b)
 	return !(x < y);
 }
 
-void free_nothing(void *data) {
-	printf("free %p!\n", data);
-}
-
 int main() {
 	setvbuf(stdout, NULL, _IONBF, 0);
 	int	arr[] = {16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
