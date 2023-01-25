@@ -12,6 +12,7 @@ bool test(const char* str)
 	bool	rv_is_ko = rv_actual != dst_actual;
 	bool	is_ko = dst_is_ko || rv_is_ko;
 	printf("[%s] strcpy: \"%s\" -> \"%s\" expected rv = %p, actual rv = %p\n", is_ko ? "KO" : "ok", str, dst_actual, dst_actual, rv_actual);
+	free(dst_actual);
 	return is_ko;
 }
 

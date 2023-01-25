@@ -17,4 +17,5 @@ int main() {
 		n = ft_list_size(head);
 		printf("size = %zu\n", n);
 	}
+	ft_list_clear(head, free_nothing);
 }
