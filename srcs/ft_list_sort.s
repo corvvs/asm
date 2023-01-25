@@ -27,8 +27,8 @@ _ft_merge_list:
         mov     r14, rdx                        ; cmp   = r14
 
 .loop:
-        test    r12, r12
-        cmove   r12, r13                        ; head = tail if (!head)
+        test    r12, r12                        ; if (!head)
+        cmove   r12, r13                        ;       head = tail
 
         xor     rax, rax
         or      rax, r15
@@ -41,8 +41,8 @@ _ft_merge_list:
         jz      .push_back_top                  ; !bot -> push_back_top
         test    r15, r15
         jz      .push_back_bot                  ; !top -> push_back_pop
-        mov     rdi, [r15 + ft_list_data]
-        mov     rsi, [rbx + ft_list_data]
+        mov     rdi, data_of(r15)
+        mov     rsi, data_of(rbx)
         call    r14                             ; r14 には cmp が入っている
         test    eax, eax
                                                 ; jns: jump if not signed
@@ -52,19 +52,19 @@ _ft_merge_list:
 .push_back_top:
         test    r13, r13
         jz      .push_back_top_skip             ; if (tail)
-        mov     [r13 + ft_list_next], r15       ;       tail->next = top
+        mov     next_of(r13), r15               ;       tail->next = top
 .push_back_top_skip:
         mov     r13, r15                        ; tail = top
-        mov     r15, [r15 + ft_list_next]       ; top = top->next
+        mov     r15, next_of(r15)               ; top = top->next
         jmp     .loop
 
 .push_back_bot:
         test    r13, r13
         jz      .push_back_bot_skip             ; if (tail)
-        mov     [r13 + ft_list_next], rbx       ;       tail->next = bot
+        mov     next_of(r13), rbx               ;       tail->next = bot
 .push_back_bot_skip:
         mov     r13, rbx                        ; tail = bot
-        mov     rbx, [rbx + ft_list_next]       ; bot = bot->next
+        mov     rbx, next_of(rbx)               ; bot = bot->next
         jmp     .loop
 
 
@@ -74,7 +74,7 @@ _ft_merge_list:
         jz      .cutted_out
 
         xor     rax, rax
-        mov     [r13 + ft_list_next], rax
+        mov     next_of(r13), rax
 .cutted_out:
         mov     rax, r12
 
@@ -106,11 +106,11 @@ _ft_list_merge_sort:
         test    r12, r12
         jz      .end_loop
         mov     r14, r13                        ; bot_prev = bot
-        mov     r13, [r13 + ft_list_next]       ; bot = bot->next
-        mov     r12, [r12 + ft_list_next]       ; top = top->next
+        mov     r13, next_of(r13)               ; bot = bot->next
+        mov     r12, next_of(r12)               ; top = top->next
         test    r12, r12
         jz      .loop
-        mov     r12, [r12 + ft_list_next]       ; top = top->next if (top)
+        mov     r12, next_of(r12)               ; top = top->next if (top)
         jmp     .loop
 
 .end_loop:
@@ -118,7 +118,7 @@ _ft_list_merge_sort:
         jz      .cutted_out
 
         xor     rax, rax
-        mov     [r14 + ft_list_next], rax       ; bot_prev->next = 0 if (bot_prev)
+        mov     next_of(r14), rax               ; bot_prev->next = 0 if (bot_prev)
 
 .cutted_out:
         mov     rax, rdi                        ; rax = list
@@ -134,7 +134,7 @@ _ft_list_merge_sort:
         mov     rdi, r12
         mov     rsi, rax
         mov     rdx, r14
-        call    _ft_merge_list
+        call    _ft_merge_list                  ; ft_merge_list(top, bot, cmp)
 
 .epilogue:
         add     rsp, 8

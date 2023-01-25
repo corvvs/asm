@@ -36,10 +36,13 @@ int main() {
 		for (unsigned int j = 0; j < i; ++j) {
 			ft_list_push_front(&head, &arr[j]);
 		}
+		printf("sorting:   ");
 		FT_LIST_PRINT(head, int);
-		printf("sorting.\n");
 		ft_list_sort(&head, intcmp);
-		printf("sorted.\n");
+		printf("sorted:    ");
+		FT_LIST_PRINT(head, int);
+		ft_list_sort(&head, intcmp);
+		printf("re-sorted: ");
 		FT_LIST_PRINT(head, int);
 	}
 }

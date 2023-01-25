@@ -21,10 +21,13 @@ int		ft_atoi_base(const char *str, const char *base);
 void	ft_list_push_front(t_list **begin_list, void *data);
 size_t	ft_list_size(t_list *begin_list);
 void	ft_list_sort(t_list **begin_list, int (*cmp)());
+void	ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
 
 int		ft_is_sign(int c);
 int		ft_is_space(int c);
 t_list	*ft_list_new(void *data);
+void	ft_list_delete(t_list *node, void (*free_fct)(void *));
+void	ft_list_clear(t_list *list, void (*free_fct)(void *));
 
 #include <limits.h>
 int		make_map(const char *base, unsigned char char_map[UCHAR_MAX + 1]);

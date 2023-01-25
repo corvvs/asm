@@ -23,9 +23,9 @@ _ft_list_new:
         jz      .epilogue                       ; rax == NULL なら終了
 
 .set_fields:
-        mov     [rax + ft_list_data], r12       ; rax->data = r12 (data)
+        mov     data_of(rax), r12               ; rax->data = r12 (data)
         xor     r12, r12
-        mov     [rax + ft_list_next], r12       ; rax->next = 0
+        mov     next_of(rax), r12               ; rax->next = 0
 
 .epilogue:
         add     rsp, 8
@@ -52,7 +52,7 @@ _ft_list_push_front:
         jz      .epilogue                       ; rax == NULL なら即終了
 
         mov     rdi, [r12]                      ; rdi = *r12 (*begin_list)
-        mov     [rax + ft_list_next], rdi       ; rax->next = rdi = *begin_list
+        mov     next_of(rax), rdi               ; rax->next = rdi = *begin_list
         mov     [r12], rax                      ; *r12 (*begin_list) = rax
 
 .epilogue:
