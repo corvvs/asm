@@ -9,16 +9,6 @@
 
 #include <stdio.h>
 
-#define FT_LIST_PRINT(list, data_type)	{\
-	t_list *curr = list;\
-	printf("[");\
-	while (curr) {\
-		printf("%d, ", *(data_type *)curr->data);\
-		curr = curr->next;\
-	}\
-	printf("]\n");\
-}
-
 int	intcmp(void	*a, void *b)
 {
 	int ia = *(int *)a;

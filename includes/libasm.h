@@ -10,6 +10,26 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+#define FT_LIST_PRINT(list, data_type)	{\
+	t_list *curr = list;\
+	printf("[");\
+	while (curr) {\
+		printf("%d, ", *(data_type *)curr->data);\
+		curr = curr->next;\
+	}\
+	printf("]\n");\
+}
+
+#define FT_LIST_ADDRESS(list)	{\
+	t_list *curr = list;\
+	printf("[");\
+	while (curr) {\
+		printf("%p|%p, ", curr, curr->data);\
+		curr = curr->next;\
+	}\
+	printf("]\n");\
+}
+
 size_t	ft_strlen(const char *str);
 char 	*ft_strcpy(char *dst, const char *src);
 int		ft_strcmp(const char *s1, const char *s2);
