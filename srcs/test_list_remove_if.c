@@ -9,26 +9,6 @@
 
 #include <stdio.h>
 
-#define FT_LIST_PRINT(list, data_type)	{\
-	t_list *curr = list;\
-	printf("[");\
-	while (curr) {\
-		printf("%d, ", *(data_type *)curr->data);\
-		curr = curr->next;\
-	}\
-	printf("]\n");\
-}
-
-#define FT_LIST_ADDRESS(list)	{\
-	t_list *curr = list;\
-	printf("[");\
-	while (curr) {\
-		printf("%p|%p, ", curr, curr->data);\
-		curr = curr->next;\
-	}\
-	printf("]\n");\
-}
-
 int	intcmp(void	*a, void *b)
 {
 	int ia = *(int *)a;
@@ -68,7 +48,7 @@ void free_nothing(void *data) {
 
 int main() {
 	setvbuf(stdout, NULL, _IONBF, 0);
-	int	arr[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+	int	arr[] = {16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 	t_list *head = NULL;
 	for (unsigned int i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
 		ft_list_push_front(&head, &arr[i]);
