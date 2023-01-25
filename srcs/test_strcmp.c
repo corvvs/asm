@@ -58,22 +58,22 @@ int main()
 	kos += test("おばんざい", "おばんdeath");
 	kos += test("おばんxie", "おばんです");
 	LONGCASE("INT_MAX - 1 sized; same",
-		n = 1000 - 1,
+		n = INT_MAX - 1,
 		(void)1);
 	LONGCASE("INT_MAX sized; same",
-		n = 1000,
+		n = INT_MAX,
 		(void)1);
 	LONGCASE("INT_MAX + 1 sized; same",
-		n = 1000; n += 1,
+		n = INT_MAX; n += 1,
 		(void)1);
 	LONGCASE("INT_MAX + 1 sized; differ at last letter",
-		n = 1000; n += 1,
+		n = INT_MAX; n += 1,
 		s1[n - 1] = (char)200);
 	LONGCASE("UINT_MAX + 1 sized; same",
-		n = 2000; n += 1,
+		n = UINT_MAX; n += 1,
 		(void)1);
 	LONGCASE("UINT_MAX + 1 sized; differ at last letter",
-		n = 2000; n += 1,
+		n = UINT_MAX; n += 1,
 		s1[n - 1] = (char)200);
 	return !(kos == 0);
 }

@@ -49,11 +49,11 @@ int main()
 	kos += test("志布志市志布志町志布志");
 
 
-	LONGCASE("INT_MAX - 1 sized", n = 1000 - 1, (void)1);
-	LONGCASE("INT_MAX sized", n = 1000, (void)1);
-	LONGCASE("INT_MAX + 1 sized", n = 1000; n += 1, (void)1);
-	LONGCASE("UINT_MAX sized", n = 2000, (void)1);
-	LONGCASE("UINT_MAX + 1 sized", n = 2000; n += 1, (void)1);
+	LONGCASE("INT_MAX - 1 sized", n = INT_MAX - 1, (void)1);
+	LONGCASE("INT_MAX sized", n = INT_MAX, (void)1);
+	LONGCASE("INT_MAX + 1 sized", n = INT_MAX; n += 1, (void)1);
+	LONGCASE("UINT_MAX sized", n = UINT_MAX, (void)1);
+	LONGCASE("UINT_MAX + 1 sized", n = UINT_MAX; n += 1, (void)1);
 
 	return !(kos == 0);
 }
