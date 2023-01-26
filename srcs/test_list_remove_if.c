@@ -9,6 +9,15 @@
 
 #include <stdio.h>
 
+int	test(const char *label, t_list *list, const char* expected) {
+	char *buffer = malloc(sizeof(char) * (10000 + 1));
+	FT_LIST_WRITE_INT(buffer, list);
+	bool is_ko = strcmp(buffer, expected);
+	OUTRESULT(is_ko, "%s\n     expected: %s\n     actual:   %s\n", label, expected, buffer);
+	free(buffer);
+	return is_ko;
+}
+
 int	intcmp(void	*a, void *b)
 {
 	int ia = *(int *)a;
@@ -44,43 +53,36 @@ int	lt(void *a, void *b)
 
 int main() {
 	setvbuf(stdout, NULL, _IONBF, 0);
+	int kos = 0;
 	int	arr[] = {16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 	t_list *head = NULL;
 	for (unsigned int i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
 		ft_list_push_front(&head, &arr[i]);
 	}
 
-	FT_LIST_ADDRESS(head);
 	int v ;
-	printf("[initial]\n");
-	FT_LIST_PRINT(head, int);
+	kos += test("[initial]", head, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, ]");
 	v = 100;
 	ft_list_remove_if(&head, &v, intcmp, free_nothing);
-	printf("[removed: == %d]\n", v);
-	FT_LIST_PRINT(head, int);
+	kos += test("[removed: == 100]", head, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, ]");
 	v = 0;
 	ft_list_remove_if(&head, &v, intcmp, free_nothing);
-	printf("[removed: == %d]\n", v);
-	FT_LIST_PRINT(head, int);
+	kos += test("[removed: == 0]", head, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, ]");
 	v = 7;
 	ft_list_remove_if(&head, &v, intcmp, free_nothing);
-	printf("[removed: == %d]\n", v);
-	FT_LIST_PRINT(head, int);
-	v = 4;
-	ft_list_remove_if(&head, &v, is_coprime, free_nothing);
-	printf("[removed: coprime with %d]\n", v);
-	FT_LIST_PRINT(head, int);
+	kos += test("[removed: == 7]", head, "[1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, ]");
+	ft_list_remove_if(&head, &v, intcmp, free_nothing);
+	kos += test("[removed: == 7]", head, "[1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, ]");
 	v = 5;
+	ft_list_remove_if(&head, &v, is_coprime, free_nothing);
+	kos += test("[removed: coprime with 5]", head, "[5, 10, 15, 5, 10, 15, ]");
+	v = 11;
 	ft_list_remove_if(&head, &v, lt, free_nothing);
-	printf("[removed: < %d]\n", v);
-	FT_LIST_PRINT(head, int);
+	kos += test("[removed: < 11]", head, "[15, 15, ]");
 	v = 100;
 	ft_list_remove_if(&head, &v, lt, free_nothing);
-	printf("[removed: < %d]\n", v);
-	FT_LIST_PRINT(head, int);
-	v = 100;
+	kos += test("[removed: < 100]", head, "[]");
 	ft_list_remove_if(&head, &v, lt, free_nothing);
-	printf("[removed: < %d]\n", v);
-	FT_LIST_PRINT(head, int);
-	printf("head = %p\n", head);
+	kos += test("[removed: < 100]", head, "[]");
+	return !(kos == 0);
 }

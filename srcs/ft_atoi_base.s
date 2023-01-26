@@ -158,22 +158,25 @@ _make_map:
 
 _ft_atoi_base:
         ; int ft_atoi_base(const char *str, const char *base)
+        m_zeroize(rax)
+        m_jump_if_zero  rdi, .return    ; return 0 if (!str)
+        m_jump_if_zero  rsi, .return    ; return 0 if (!base)
         m_start_func
         %define str     r12
         %define i       r14
-        push    str
-        push    r13             ; r13 = base OR len of base
-        push    i
-        push    r15
-        push    rbx
-        sub     rsp, 256        ; char_map
-        sub     rsp, 8
+        push            str
+        push            r13             ; r13 = base OR len of base
+        push            i
+        push            r15
+        push            rbx
+        sub             rsp, 256        ; char_map
+        sub             rsp, 8
         ; prologue
 
         mov     str, rdi        ; r12 = str
         mov     r13, rsi        ; r13 = base
         m_zeroize(i)            ; i = 0
-        mov     r15d, -1        ; sign = -1
+        mov     r15d, 1         ; sign = +1s
         m_zeroize(rbx)
 
 .call_make_map:
@@ -223,6 +226,7 @@ _ft_atoi_base:
 
 .epilogue:
         mov     eax, ebx
+        imul    eax, r15d
 
         ; epilogue
         add     rsp, 8
@@ -235,4 +239,5 @@ _ft_atoi_base:
         %undef  str
         %undef  i
         m_end_func
+.return:
         ret
