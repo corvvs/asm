@@ -20,6 +20,7 @@ bool long_test(size_t expected)
 	memset(str, 'a', expected);
 	str[expected] = 0;
 	size_t actual = ft_strlen(str);
+	free(str);
 	bool is_ko = actual != expected;
 	OUTRESULT(is_ko, "ft_strlen(|%zu|) = %zu\n", expected, actual);
 	return is_ko;
