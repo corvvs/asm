@@ -10,7 +10,7 @@
 int	test(const char* str, const char* base, int expected) {
 	int actual = ft_atoi_base(str, base);
 	bool is_ko = actual != expected;
-	dprintf(STDERR_FILENO, "%s ft_atoi_base(\"%s\", \"%s\") = %d, expected: %d\n" TX_RS, is_ko ? TX_ER "[KO]" : TX_OK "[ok]", str, base, actual, expected);
+	OUTRESULT(is_ko, "ft_atoi_base(\"%s\", \"%s\") = %d, expected: %d\n", str, base, actual, expected);
 	return is_ko;
 }
 

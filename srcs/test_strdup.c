@@ -1,4 +1,5 @@
 #include "libasm.h"
+#include "test.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -11,7 +12,7 @@ bool test(const char* str)
 	bool addr_is_ko = expected == str;
 	bool str_is_ko = strcmp(expected, str) != 0;
 	bool is_ko = addr_is_ko || str_is_ko;
-	printf("[%s] src = \"%s\"(%p); strdup(src) = %p %s src\n", is_ko ? "KO" : "ok", str, str, expected, (str_is_ko || addr_is_ko ? "!=" : "=="));
+	OUTRESULT(is_ko, "src = \"%s\"(%p); strdup(src) = %p %s src\n", str, str, expected, (str_is_ko || addr_is_ko ? "!=" : "=="));
 	free(expected);
 	return is_ko;
 }
@@ -24,7 +25,7 @@ bool long_test(const char* label, const char* str)
 	bool addr_is_ko = expected == str;
 	bool str_is_ko = strcmp(expected, str) != 0;
 	bool is_ko = addr_is_ko || str_is_ko;
-	printf("[%s] [%s] src = %p(%zu); strdup(src) = %p %s src\n", is_ko ? "KO" : "ok", label, str, n, expected, (str_is_ko || addr_is_ko ? "!=" : "=="));
+	OUTRESULT(is_ko, "[%s] src = %p(%zu); strdup(src) = %p %s src\n", label, str, n, expected, (str_is_ko || addr_is_ko ? "!=" : "=="));
 	free(expected);
 	return is_ko;
 }

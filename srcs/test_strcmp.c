@@ -1,4 +1,5 @@
 #include "libasm.h"
+#include "test.h"
 #include <limits.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -14,7 +15,7 @@ bool test(const char* s1, const char *s2)
 	int	actual = ft_strcmp(s1, s2);
 
 	bool	is_ko = signify(expected) != signify(actual);
-	printf("[%s] strcmp(\"%s\", \"%s\"); expected rv = %d, actual rv = %d\n", is_ko ? "KO" : "ok", s1, s2, expected, actual);
+	OUTRESULT(is_ko, "strcmp(\"%s\", \"%s\"); expected rv = %d, actual rv = %d\n", s1, s2, expected, actual);
 	return is_ko;
 }
 
@@ -26,7 +27,7 @@ bool test_longstr(const char* label, const char* s1, const char *s2)
 	size_t	n2 = strlen(s2);
 
 	bool	is_ko = signify(expected) != signify(actual);
-	printf("[%s] [%s] strcmp(s1(%zu), s2(%zu)); expected rv = %d, actual rv = %d\n", is_ko ? "KO" : "ok", label, n1, n2, expected, actual);
+	OUTRESULT(is_ko, "[%s] strcmp(s1(%zu), s2(%zu)); expected rv = %d, actual rv = %d\n", label, n1, n2, expected, actual);
 	return is_ko;
 }
 
