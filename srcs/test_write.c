@@ -1,4 +1,5 @@
 #include "libasm.h"
+#include "test.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -23,8 +24,9 @@ bool test(
 	bool is_errno_ko = errno != expected_errno;
 	bool is_ko = is_rv_ko || is_errno_ko;
 	const char* errmsg = errno != 0 ? strerror(errno) : "\"\"";
-	printf("[%s] %s\n", is_ko ? "KO" : "ok", label);
-	printf("     write(%d, %s, %zu) = %zd(expected: %zd), errno = %d(%s, expected: %d)\n", ufd, buffer ? "buffer" : "(null)", size, rv, expected_rv, errno, errmsg, expected_errno);
+	OUTRESULT(is_ko,
+		"%s\n     write(%d, %s, %zu) = %zd(expected: %zd), errno = %d(%s, expected: %d)\n",
+		label, ufd, buffer ? "buffer" : "(null)", size, rv, expected_rv, errno, errmsg, expected_errno);
 	if (filename) {
 		close(ufd);
 	}
