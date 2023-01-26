@@ -30,6 +30,10 @@ int	intcmp(void	*a, void *b)
 int main() {
 	int kos = 0;
 
+	dprintf(STDERR_FILENO, "ft_list_sort(NULL, intcmp);\n");
+	ft_list_sort(NULL, intcmp);
+	dprintf(STDERR_FILENO, "ft_list_sort(NULL, NULL);\n");
+	ft_list_sort(NULL, NULL);
 	int	arr[] = {9, 100, 5, -1, 45, 2, 817, 94, 0, -4, 17, };
 	t_list *head = NULL;
 	kos += test("blank", head,        "[]");
@@ -51,6 +55,8 @@ int main() {
 	kos += test("sorted once", head,  "[-4, -1, 0, 2, 5, 9, 17, 45, 94, 100, 817, ]");
 	ft_list_sort(&head, intcmp);
 	kos += test("sorted twice", head, "[-4, -1, 0, 2, 5, 9, 17, 45, 94, 100, 817, ]");
+	dprintf(STDERR_FILENO, "ft_list_sort(head, NULL);\n");
+	ft_list_sort(&head, NULL);
 	ft_list_clear(head, free_nothing);
 
 	return !(kos == 0);

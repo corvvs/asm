@@ -84,5 +84,23 @@ int main() {
 	kos += test("[removed: < 100]", head, "[]");
 	ft_list_remove_if(&head, &v, lt, free_nothing);
 	kos += test("[removed: < 100]", head, "[]");
+
+
+	head = NULL;
+	for (unsigned int i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
+		ft_list_push_front(&head, &arr[i]);
+	}
+	kos += test("[NULL check]", head, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, ]");
+	dprintf(STDERR_FILENO, "ft_list_remove_if(NULL, NULL, NULL, NULL);\n");
+	ft_list_remove_if(NULL, NULL, NULL, NULL);
+	dprintf(STDERR_FILENO, "ft_list_remove_if(&head, NULL, NULL, NULL);\n");
+	ft_list_remove_if(&head, &v, NULL, NULL);
+	dprintf(STDERR_FILENO, "ft_list_remove_if(NULL, &v, lt, free_nothing);\n");
+	ft_list_remove_if(NULL, &v, lt, free_nothing);
+	dprintf(STDERR_FILENO, "ft_list_remove_if(&head, &v, NULL, free_nothing);\n");
+	ft_list_remove_if(&head, &v, NULL, free_nothing);
+	kos += test("[NULL done]", head, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, ]");
+
+	ft_list_clear(head, free_nothing);
 	return !(kos == 0);
 }
