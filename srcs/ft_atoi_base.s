@@ -21,14 +21,14 @@ _ft_memset:
         ; push    rbp
         ; mov     rbp, rsp
         ; prologue
-        mov     rax, rdi
+        mov             rax, rdi
 
 .loop:
         m_jump_if_zero  rdx, .epilogue
-        mov     byte [rdi], sil
-        lea     rdi, [rdi + 1]
-        sub     rdx, 1
-        jmp     .loop
+        mov             byte [rdi], sil
+        m_inc(rdi)
+        sub             rdx, 1
+        jmp             .loop
 
 .epilogue:
         ; epilogue
@@ -96,67 +96,64 @@ _make_map:
         mov     rbp, rsp
         ; prologue
         ; rdi = base, rsi = char_map
-
-        push    r12
-        push    r13
+        %define base            r12
+        %define char_map        r13
+        push    base
+        push    char_map
         push    r14
         push    rbx
         ; sub     rsp, 8
 
-        mov     r12, rdi                ; base
-        mov     r13, rsi                ; char_map
-        mov     r14, 0                  ; i = 0
+        mov     base, rdi
+        mov     char_map, rsi
+        m_zeroize(r14)                  ; i = 0
 
         ; char_map を -1 で初期化する
-        mov     rdi, r13
+        mov     rdi, char_map
         mov     rsi, 255
         mov     rdx, 256
         call    _ft_memset
 
         m_zeroize(eax)
+        m_zeroize(rbx)
 
 .loop:
-        movzx           ebx, byte [r12 + r14]   ; ebx = (unsigned char) base[i]
+        movzx           ebx, byte [base + r14]  ; ebx = (unsigned char) base[i]
                                                 ; ebx のゴミビットを掃除
-        m_jump_if_zero  ebx, .epilogue
+        m_jump_if_zero  ebx, .epilogue          ; while (base[i]) {
 
-        ; is_sign なら invalid
         mov                     edi, ebx
         call                    _ft_is_sign
-        m_jump_if_nonzero       eax, .ret_invalid
+        m_jump_if_nonzero       eax, .invalid   ; break if (!ft_is_sign(base[i]));
 
-        ; is_space なら invalid
         mov                     edi, ebx
         call                    _ft_is_space
-        m_jump_if_nonzero       eax, .ret_invalid
+        m_jump_if_nonzero       eax, .invalid   ; break if (!ft_is_space(base[i]));
 
         ; char_map[base[i]] が FFH でないなら invalid
-        mov     rax, [r13 + rbx]
-        cmp     byte [r13 + rbx], byte 255
-        jnz     .ret_invalid
+        lea     rax, [char_map + rbx]
+        cmp     byte [rax], byte 255
+        jnz     .invalid                        ; break if (char_map[base[i]] != 255);
+        mov     byte [rax], r14b                ; char_map[base[i]] = r14;
+        m_inc(r14)
+        jmp     .loop                           ; }
 
-        mov     byte [r13 + rbx], r14b          ; char_map[base[i]] = r14
-        lea     rax, [r13 + rbx]
-        mov     rax, [r13 + rbx]
-        mov     rax, [r13 + rbx + 1]
-        add     r14, 1                          ; i += 1
-        mov     rax, r14
-        jmp     .loop
-
-.ret_invalid:
-        mov     r14, 0
+.invalid:
+        m_zeroize(r14)
 
 .epilogue:
         ; epilogue
         mov     rax, r14
-        xor     r14, r14
+        m_zeroize(r14)
         cmp     eax, 2
-        cmovc   eax, r14d
+        cmovc   eax, r14d       ; eax = eax < 2 ? 0 : eax
         ; add     rsp, 8
         pop     rbx
         pop     r14
-        pop     r13
-        pop     r12
+        pop     char_map
+        pop     base
+        %undef  base
+        %undef  char_map
         pop     rbp
         ret
 
@@ -193,7 +190,7 @@ _ft_atoi_base:
         m_jump_if_zero  edi, .end_skip_space            ; NUL文字チェック
         call            _ft_is_space
         m_jump_if_zero  eax, .end_skip_space
-        lea             i, [i + 1]
+        m_inc(i)
         jmp             .loop_skip_space
 .end_skip_space:
 
@@ -209,7 +206,7 @@ _ft_atoi_base:
         cmp             ebx, '-'
         cmove           r15d, eax                       ; ebx == '-' だったなら sign = -sign
 
-        lea             i, [i + 1]
+        m_inc(i)
         jmp             .loop_skip_sign
 .end_skip_sign:
 
@@ -222,7 +219,7 @@ _ft_atoi_base:
         jz              .end_atoi
         imul            ebx, r13d
         add             ebx, edi
-        lea             i, [i + 1]
+        m_inc(i)
         jmp             .loop_atoi
 .end_atoi:
 
