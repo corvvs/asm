@@ -380,6 +380,7 @@ int	test_fail()
 	kos += test("12345", "0123455", 0);
 	kos += test("12345", "0123 45", 0);
 	kos += test("12345", "0123\t45", 0);
+	kos += test("12345", "0123		45", 0);
 	kos += test("12345", "0123+45", 0);
 	kos += test("12345", "0123+4-5", 0);
 	return kos;
@@ -387,7 +388,24 @@ int	test_fail()
 
 int	test_extreme() {
 	int kos = 0;
-
+	kos += test(" +1", "0123456789", 1);
+	kos += test(" -1", "0123456789", -1);
+	kos += test("++1", "0123456789", 1);
+	kos += test("--1", "0123456789", 1);
+	kos += test("+-1", "0123456789", -1);
+	kos += test("-+1", "0123456789", -1);
+	kos += test("   ++++----vvvvvvvvvDtvf", "v{lSQM^|_eiHgtujY`XDf9[k=L.05;mI7nqP", 903332);
+	kos += test("		+-+-+-+----vvvvvvvvvDtvf", "v{lSQM^|_eiHgtujY`XDf9[k=L.05;mI7nqP", -903332);
+	kos += test("+2147483647", "0123456789", 2147483647);
+	kos += test("+2147483648", "0123456789", -2147483648); // overflow
+	kos += test("-2147483648", "0123456789", -2147483648);
+	kos += test("-2147483648...", "0123456789", -2147483648);
+	kos += test("", "0123456789", 0);
+	kos += test(" 	", "0123456789", 0);
+	kos += test("---", "0123456789", 0);
+	kos += test(NULL, "0123456789", 0);
+	kos += test("1", NULL, 0);
+	kos += test(NULL, NULL, 0);
 	return kos;
 }
 
