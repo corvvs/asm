@@ -12,13 +12,12 @@ _ft_list_size:
         ; mov     rbp, rsp
         ; prologue
 
-        xor     rax, rax        ; size = 0
+        m_zeroize(rax)                  ; size = 0
 .loop:
-        test    rdi, rdi
-        jz      .epilogue
-        lea     rax, [rax + 1]
-        mov     rdi, next_of(rdi)
-        jmp     .loop
+        m_jump_if_zero  rdi, .epilogue
+        m_inc(rax)
+        mov             rdi, next_of(rdi)
+        jmp             .loop
 
 .epilogue:
         ; pop     rbp

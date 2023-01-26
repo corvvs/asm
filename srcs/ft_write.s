@@ -7,8 +7,7 @@ SECTION .text align=16
 
 _ft_write:
         ; prologue
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         push    rbx
         sub     rsp, 8
 
@@ -24,5 +23,5 @@ _ft_write:
 .epilogue:
         add     rsp, 8
         pop     rbx
-        pop     rbp
+        m_end_func
         ret

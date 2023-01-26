@@ -1,3 +1,4 @@
+%include "srcs/ft_macro.s"
 default rel
 
 global _ft_strcpy
@@ -7,7 +8,7 @@ _ft_strcpy:                                     ; dst は rdi, src は rsi に�
         ; push    rbp                           ; スタック使わないので不要
         ; mov     rbp, rsp
 
-        mov     rax, 0                          ; インデックスi; dst[i], src[i] として使う.
+        m_zeroize(rax)                          ; インデックスi; dst[i], src[i] として使う.
 
 align   8
 .copying:
@@ -16,9 +17,8 @@ align   8
                                                 ; まとめて mov [rdi + rax], [rsi + rax] とするのはアウト
                                                 ; -> mov はメモリtoメモリの転送ができないため
                                                 ; 8ビットだけなら本当はできるんじゃね？
-        lea     rax, [rax + 1]
-        cmp     dl, 0
-        jnz     .copying
+        m_inc(rax)
+        m_jump_if_nonzero       dl, .copying
 
 .epilogue:
         lea     rax, [rdi]                      ; rdi に入っているアドレスが指す値, ではなくアドレス自体をraxに入れる

@@ -27,4 +27,53 @@
     mov     dword [rax], %1 ; set errno
 %endmacro
 
+%macro  m_start_func 0
+        push    rbp                   ; rbpレジスタの値をスタックに積んだあと,
+        mov     rbp, rsp              ; rbpにレジスタにrspレジスタの値をコピーする.
+%endmacro
+
+%macro  m_end_func 0
+        pop     rbp                   ; スタックトップから1つポップしてrbpレジスタにコピー
+%endmacro
+
+%define m_zeroize(reg)  xor     reg, reg
+
+%macro  m_jump_if_zero      2
+        ; reg, label
+        ; reg の値が0なら label に飛ぶ
+        test    %1, %1
+        jz      %2
+%endmacro
+
+%macro  m_jump_if_nonzero   2
+        ; reg, label
+        ; reg の値が0でないなら label に飛ぶ
+        test    %1, %1
+        jnz     %2
+%endmacro
+
+%define m_inc(reg)  lea reg, [reg + 1]
+
+%macro  m_mmmov 3
+        ; to, via, from
+        ; メモリ間ムーブ(memory to memory move)
+        ; アドレス from のデータをレジスタ via を経由して アドレス to にコピーする
+        ; eg.
+        ; m_mmmov   [rdi], rax, [rdi + 8]
+        ; は
+        ; mov       rax, [rdi + 8]
+        ; mov       [rdi], rax
+        ; と等価.
+        mov     %2, %3
+        mov     %1, %2
+%endmacro
+
+; '-' or '+'
+; 43, 45 が立っている
+%define CHARSET_SIGN    qword   0000000000000000001010000000000000000000000000000000000000000000B
+
+; ' ' or '\r' or '\f' or '\v' or '\n' or '\t'
+; 9, 10, 11, 12, 13, 32 が立っている
+%define CHARSET_SPACE   qword   0000000000000000000000000000000100000000000000000011111000000000B
+
 %endif
