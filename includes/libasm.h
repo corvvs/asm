@@ -10,11 +10,26 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-#define FT_LIST_PRINT(list, data_type)	{\
+#define FT_LIST_WRITE_STR(buffer, list)	{\
+	char	*__head = buffer;\
+	t_list	*curr = list;\
+	__head += sprintf(__head, "[");\
+	while (curr) {\
+		__head += sprintf(__head, "%s, ", (char *)curr->data);\
+		curr = curr->next;\
+	}\
+	__head += sprintf(__head, "]");\
+}
+
+#define FT_LIST_PRINT(list, fmt, data_type)	{\
 	t_list *curr = list;\
 	printf("[");\
 	while (curr) {\
-		printf("%d, ", *(data_type *)curr->data);\
+		data_type *p = curr->data;\
+		if (p)\
+			printf(fmt ", ", *(data_type *)curr->data);\
+		else\
+			printf("NULL, ");\
 		curr = curr->next;\
 	}\
 	printf("]\n");\
