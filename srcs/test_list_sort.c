@@ -53,5 +53,5 @@ int main() {
 	kos += test("sorted twice", head, "[-4, -1, 0, 2, 5, 9, 17, 45, 94, 100, 817, ]");
 	ft_list_clear(head, free_nothing);
 
-	return !!kos;
+	return !(kos == 0);
 }
