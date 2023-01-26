@@ -21,6 +21,21 @@ typedef struct		s_list
 	__head += sprintf(__head, "]");\
 }
 
+#define FT_LIST_WRITE_INT(buffer, list)	{\
+	char	*__head = buffer;\
+	t_list	*curr = list;\
+	__head += sprintf(__head, "[");\
+	while (curr) {\
+		int *p = curr->data;\
+		if (p)\
+			__head += sprintf(__head, "%d, ", *p);\
+		else\
+			__head += sprintf(__head, "NULL, ");\
+		curr = curr->next;\
+	}\
+	__head += sprintf(__head, "]");\
+}
+
 #define FT_LIST_PRINT(list, fmt, data_type)	{\
 	t_list *curr = list;\
 	printf("[");\
