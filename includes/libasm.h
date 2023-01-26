@@ -49,6 +49,4 @@ t_list	*ft_list_new(void *data);
 void	ft_list_delete(t_list *node, void (*free_fct)(void *));
 void	ft_list_clear(t_list *list, void (*free_fct)(void *));
 
-#include <limits.h>
-int		make_map(const char *base, unsigned char char_map[UCHAR_MAX + 1]);
 #endif
