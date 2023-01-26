@@ -17,6 +17,7 @@ bool test(t_list *list, size_t expected)
 
 int main() {
 	unsigned int kos = 0;
+	kos += test(NULL, 0);
 	int		data = 1234;
 	t_list	*head = NULL;
 	size_t	n = ft_list_size(head);
