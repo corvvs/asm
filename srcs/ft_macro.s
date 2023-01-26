@@ -34,7 +34,6 @@
 
 %macro  m_end_func 0
         pop     rbp                   ; スタックトップから1つポップしてrbpレジスタにコピー
-        ret
 %endmacro
 
 %define m_zeroize(reg)  xor     reg, reg

@@ -10,8 +10,7 @@ SECTION .text align=16
 
 _ft_list_new:
         ; t_list *ft_list_new(void *data)
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         push    r12
         sub     rsp, 8
         ; prologue
@@ -29,14 +28,13 @@ _ft_list_new:
 .epilogue:
         add     rsp, 8
         pop     r12
-        pop     rbp
+        m_end_func
         ret
 
 _ft_list_push_front:
         ; void ft_list_push_front(t_list **begin_list, void *data)
         m_jump_if_zero  rdi, .return            ; rdi == NULL なら即終了
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         push    r12
         sub     rsp, 8
         ; prologue
@@ -54,6 +52,6 @@ _ft_list_push_front:
 .epilogue:
         add     rsp, 8
         pop     r12
-        pop     rbp
+        m_end_func
 .return:
         ret

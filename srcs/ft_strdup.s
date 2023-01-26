@@ -44,3 +44,4 @@ _ft_strdup:
         pop     str                             ; スタックに退避しておいた rbx を戻す
         %undef  str
         m_end_func
+        ret

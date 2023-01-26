@@ -92,8 +92,7 @@ _ft_is_space:
 
 _make_map:
         ; int make_map(const char *base, int char_map[UCHAR_MAX + 1])
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         ; prologue
         ; rdi = base, rsi = char_map
         %define base            r12
@@ -154,13 +153,12 @@ _make_map:
         pop     base
         %undef  base
         %undef  char_map
-        pop     rbp
+        m_end_func
         ret
 
 _ft_atoi_base:
         ; int ft_atoi_base(const char *str, const char *base)
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         %define str     r12
         %define i       r14
         push    str
@@ -236,5 +234,5 @@ _ft_atoi_base:
         pop     str
         %undef  str
         %undef  i
-        pop     rbp
+        m_end_func
         ret

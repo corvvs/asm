@@ -11,8 +11,7 @@ SECTION .text align=16
 ; 2つのソート済みリスト top, bot を, コンパレータ compare を用いてマージする.
 _ft_merge_list:
         ; t_list *ft_merge_list(t_list *top, t_list *bot, int (*compare)())
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         %define head    r12
         %define tail    r13
         %define top     r15
@@ -67,8 +66,6 @@ _ft_merge_list:
         mov     tail, bot                       ; tail = bot
         mov     bot, next_of(bot)               ; bot = bot->next
         jmp     .loop
-
-
 .loop_end:                                      ; }
 
         m_jump_if_zero  tail, .cutted_out
@@ -89,14 +86,13 @@ _ft_merge_list:
         %undef  top
         %undef  bot
         %undef  cmp
-        pop     rbp
+        m_end_func
         ret
 
 ; (部分)リスト list に対し, コンパレータ compare によるマージソートを実施する.
 _ft_list_merge_sort:
         ; t_list *ft_list_merge_sort(t_list *list, int (*compare)())
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         %define top             r12
         %define bot             r13
         %define bot_prev        r14
@@ -149,7 +145,7 @@ _ft_list_merge_sort:
         %undef  top
         %undef  bot
         %undef  bot_prev
-        pop     rbp
+        m_end_func
         ret
 
 
@@ -160,8 +156,7 @@ _ft_list_sort:
         m_jump_if_zero  rdi, .epilogue  ; begin_list == NULL なら終了
         m_jump_if_zero  rsi, .epilogue  ; cmp == NULL なら終了
 
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         push    r12
         sub     rsp, 8
         ; prologue
@@ -173,7 +168,6 @@ _ft_list_sort:
 
         add     rsp, 8
         pop     r12
-        pop     rbp
-
+        m_end_func
 .epilogue:
         ret

@@ -13,8 +13,7 @@ _ft_list_delete:
         ; void ft_list_delete(t_list *node, void (*free_fct)(void *))
         m_jump_if_zero  rsi, .return            ; !free_fct ならprologueすら飛ばして即 free に移る
 
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         push    r12
         sub     rsp, 8
         ; prologue
@@ -25,14 +24,13 @@ _ft_list_delete:
 
         add     rsp, 8
         pop     r12
-        pop     rbp
+        m_end_func
 .return:
         jmp     _free                   ; free(node) ; 末尾呼び出し
 
 _ft_list_clear:
         ; void ft_list_clear(t_list *list, void (*free_fct)(void *));
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         %define list            r12
         %define free_fct        r13
         push    list
@@ -56,7 +54,7 @@ _ft_list_clear:
         pop     list
         %undef  list
         %undef  free_fct
-        pop     rbp
+        m_end_func
         ret
 
 
@@ -67,8 +65,7 @@ _ft_list_remove_if:
         m_jump_if_zero  rdi, .return    ; return if (!begin_list)
         m_jump_if_zero  rdx, .return    ; return if (!compare)
 
-        push    rbp
-        mov     rbp, rsp
+        m_start_func
         %define begin_list      r12
         %define data_ref        r13
         %define compare         r14
@@ -152,7 +149,7 @@ _ft_list_remove_if:
         %undef  _temp
         %undef  _head
         %undef  _tail
-        pop     rbp
+        m_end_func
 
 .return:
         ret
