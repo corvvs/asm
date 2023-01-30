@@ -68,3 +68,65 @@ align   8                               ; アライメントを8バイトにす�
                                         ; > 1. rsp が指すアドレスから8byte値をロードし、その値をプログラムカウンタに格納
                                         ; > 2. rsp を 8 増やす
 
+align   8
+global _ft_strlen_fast
+_ft_strlen_fast:
+        %define given   rdi
+        %define hi      rsi
+        %define lo      rdx
+        %define str     rax
+        %define x       rcx
+        %define y       r8
+        mov     hi, 8080808080808080H
+        mov     lo, 0101010101010101H
+        mov     str, given
+
+.loop:
+        ; x = *str
+        ; while (!((x - lo) & ~x & hi))
+        mov     x, [str]        ; x = *str
+        mov     y, x            ; y = x
+        sub     x, lo           ; x = x - lo
+        not     y               ; y = ~y
+        and     x, y            ; x = x & y
+        test    x, hi           ; x = x & hi
+        lea     str, [str + 8]
+        jz      .loop
+
+.found:
+        lea     str, [str - 8]
+        cmp     byte [str], 0
+        je      .epilogue
+        lea     str, [str + 1]
+        cmp     byte [str], 0
+        je      .epilogue
+        lea     str, [str + 1]
+        cmp     byte [str], 0
+        je      .epilogue
+        lea     str, [str + 1]
+        cmp     byte [str], 0
+        je      .epilogue
+        lea     str, [str + 1]
+        cmp     byte [str], 0
+        je      .epilogue
+        lea     str, [str + 1]
+        cmp     byte [str], 0
+        je      .epilogue
+        lea     str, [str + 1]
+        cmp     byte [str], 0
+        je      .epilogue
+        lea     str, [str + 1]
+        cmp     byte [str], 0
+        je      .epilogue
+        lea     str, [str + 1]
+
+.epilogue:
+        lea     rax, [str]
+        sub     rax, given
+        %undef  given
+        %undef  hi
+        %undef  lo
+        %undef  str
+        %undef  x
+        %undef  y
+        ret

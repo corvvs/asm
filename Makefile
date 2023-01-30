@@ -38,7 +38,7 @@ $(call MakeTestDep,$(1)):	$(1)
 	@echo
 	@echo [Testing $(1)]
 #	valgrind --leak-check=full ./$(1)
-	./$(1)
+	time ./$(1)
 endef
 
 define TARGET_NM

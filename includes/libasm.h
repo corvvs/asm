@@ -79,4 +79,6 @@ t_list	*ft_list_new(void *data);
 void	ft_list_delete(t_list *node, void (*free_fct)(void *));
 void	ft_list_clear(t_list *list, void (*free_fct)(void *));
 
+size_t	ft_strlen_fast(const char *str);
+
 #endif

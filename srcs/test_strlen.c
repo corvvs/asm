@@ -8,7 +8,7 @@
 bool test(const char* str)
 {
 	size_t expected = strlen(str);
-	size_t actual = ft_strlen(str);
+	size_t actual = ft_strlen_fast(str);
 	bool is_ko = actual != expected;
 	OUTRESULT(is_ko, "ft_strlen(\"%s\") = %zu, expected = %zu\n", str, actual, expected);
 	return is_ko;
@@ -19,7 +19,7 @@ bool long_test(size_t expected)
 	char *str = malloc(sizeof(char) * (expected + 1));
 	memset(str, 'a', expected);
 	str[expected] = 0;
-	size_t actual = ft_strlen(str);
+	size_t actual = ft_strlen_fast(str);
 	free(str);
 	bool is_ko = actual != expected;
 	OUTRESULT(is_ko, "ft_strlen(|%zu|) = %zu\n", expected, actual);
