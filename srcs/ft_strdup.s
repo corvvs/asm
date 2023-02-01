@@ -31,7 +31,7 @@ _ft_strdup:
         ; ここでやらなくても malloc がやっているはずだが...
         mov     rbx, ENOMEM
         set_errno       ebx
-        mov     rax, -1
+        m_zeroize(rax)
         jmp     .epilogue
 
 .copy:
